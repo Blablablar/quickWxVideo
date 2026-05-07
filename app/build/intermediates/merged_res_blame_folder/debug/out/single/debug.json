@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "/Users/airal/.gradle/daemon/8.2/com.example.nfcdemo.app-merged_res-31:/layout_activity_main.xml.flat",
+        "source": "/Users/airal/.gradle/daemon/8.2/com.example.nfcdemo.app-main-33:/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/airal/.gradle/daemon/8.2/com.example.nfcdemo.app-merged_res-31:/xml_accessibility_service_config.xml.flat",
+        "source": "/Users/airal/.gradle/daemon/8.2/com.example.nfcdemo.app-main-33:/xml/accessibility_service_config.xml"
+    },
+    {
+        "merged": "com.example.nfcdemo.app-merged_res-31:/layout_activity_main.xml.flat",
+        "source": "com.example.nfcdemo.app-main-33:/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/airal/.gradle/daemon/8.2/com.example.nfcdemo.app-merged_res-31:/drawable_ic_launcher.xml.flat",
+        "source": "/Users/airal/.gradle/daemon/8.2/com.example.nfcdemo.app-main-33:/drawable/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/airal/.gradle/daemon/8.2/com.example.nfcdemo.app-merged_res-31:/layout_activity_write.xml.flat",
+        "source": "/Users/airal/.gradle/daemon/8.2/com.example.nfcdemo.app-main-33:/layout/activity_write.xml"
+    },
+    {
+        "merged": "/Users/airal/.gradle/daemon/8.2/com.example.nfcdemo.app-merged_res-31:/drawable_bg_card.xml.flat",
+        "source": "/Users/airal/.gradle/daemon/8.2/com.example.nfcdemo.app-main-33:/drawable/bg_card.xml"
+    }
+]

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NFC 名片</string>
+    <string name="main_title">NFC 名片读取</string>
+    <string name="title_write">写入 NFC 白卡</string>
+
+    <string name="ready_to_scan">请将设备靠近 NFC 标签…</string>
+    <string name="nfc_not_supported">当前设备不支持 NFC</string>
+    <string name="nfc_disabled">NFC 已关闭，请在系统设置中开启</string>
+    <string name="tag_no_data">未读取到名片数据</string>
+    <string name="read_success">读取成功</string>
+
+    <string name="label_name">姓名</string>
+    <string name="label_phone">手机号</string>
+    <string name="label_name_default">姓名：-</string>
+    <string name="label_phone_default">手机号：-</string>
+    <string name="label_name_value">姓名：%1$s</string>
+    <string name="label_phone_value">手机号：%1$s</string>
+
+    <string name="hint_name">请输入姓名</string>
+    <string name="hint_phone">请输入手机号</string>
+    <string name="hint_fill_then_arm">填写信息后点击 “开始写入” 并贴近白卡</string>
+    <string name="hint_tap_tag">请将白卡贴近设备背面以完成写入…</string>
+
+    <string name="btn_go_write">写入新卡</string>
+    <string name="btn_wechat_call">微信视频通话</string>
+    <string name="btn_test_jw">测试微信通话</string>
+    <string name="btn_clear">清除显示</string>
+    <string name="btn_arm_write">开始写入</string>
+    <string name="btn_cancel">取消</string>
+
+    <string name="accessibility_desc">NFC名片微信助手：自动在微信中搜索联系人并发起视频通话。请在扫描NFC名片后点击"微信视频通话"按钮使用。</string>
+    <string name="accessibility_not_enabled">请先前往系统设置 → 无障碍 → NFC名片微信助手 中开启服务</string>
+    <string name="wechat_call_started">正在唤起微信…</string>
+
+    <string name="input_required">姓名和手机号不能为空</string>
+    <string name="write_no_tag">未检测到 NFC 标签</string>
+    <string name="write_success">写入成功！</string>
+    <string name="write_failed_format">写入失败：%1$s</string>
+</resources>
