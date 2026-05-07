@@ -44,6 +44,7 @@ fun writeTag(tag: Tag?, message: NdefMessage) {
 
     Ndef.get(tag)?.let { ndef ->
         ndef.use {
+            it.connect()
             if (!it.isWritable) throw IOException("Tag is read-only")
             if (it.maxSize < message.toByteArray().size) throw IOException("Tag capacity is too small")
             it.writeNdefMessage(message)
@@ -53,6 +54,7 @@ fun writeTag(tag: Tag?, message: NdefMessage) {
 
     NdefFormatable.get(tag)?.let { formatable ->
         formatable.use {
+            it.connect()
             it.format(message)
         }
         return
