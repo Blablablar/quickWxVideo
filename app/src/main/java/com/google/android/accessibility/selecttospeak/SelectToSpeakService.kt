@@ -121,9 +121,9 @@ class SelectToSpeakService : AccessibilityService() {
                 stepClickVideoCallBtn()
 
                 // 步骤4：点击「视频通话」
-                // stepClickVideoChat()
+                stepClickVideoChat()
 
-                // toast("正在发起视频通话…")
+                toast("正在发起视频通话…")
             } catch (e: CancellationException) {
                 Log.d(TAG, "startCall: 任务已取消")
             } catch (e: Exception) {
