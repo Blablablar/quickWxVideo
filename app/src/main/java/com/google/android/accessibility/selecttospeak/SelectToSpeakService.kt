@@ -52,7 +52,7 @@ class SelectToSpeakService : AccessibilityService() {
         super.onServiceConnected()
         instance = this
         (isRunningFlow as MutableStateFlow).value = true
-        toast("一键微信视频服务已启动")
+        // toast("一键微信视频服务已启动")
         Log.i(TAG, "onServiceConnected")
         addAliveOverlayView()
 
