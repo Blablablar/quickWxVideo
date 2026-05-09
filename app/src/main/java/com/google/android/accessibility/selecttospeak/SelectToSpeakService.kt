@@ -2,14 +2,21 @@ package com.google.android.accessibility.selecttospeak
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
+import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlin.coroutines.coroutineContext
 
 /**
@@ -31,6 +38,9 @@ class SelectToSpeakService : AccessibilityService() {
 
         var instance: SelectToSpeakService? = null
             private set
+
+        /** 服务是否正在运行 */
+        val isRunningFlow: StateFlow<Boolean> = MutableStateFlow(false)
     }
 
     private var targetName = ""
@@ -42,8 +52,13 @@ class SelectToSpeakService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         instance = this
+        (isRunningFlow as MutableStateFlow).value = true
         toast("微信视频通话服务已启动")
         Log.i(TAG, "onServiceConnected")
+        addAliveOverlayView()
+
+        // 对齐 GKD: A11yService.onCreated { StatusService.autoStart() }
+        KeepAliveService.autoStart(this)
 
         // 恢复未完成的任务
         val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -66,8 +81,10 @@ class SelectToSpeakService : AccessibilityService() {
 
     override fun onDestroy() {
         instance = null
+        (isRunningFlow as MutableStateFlow).value = false
         callJob?.cancel()
         serviceScope.cancel()
+        removeAliveOverlayView()
         super.onDestroy()
     }
 
@@ -196,7 +213,8 @@ class SelectToSpeakService : AccessibilityService() {
             Log.d(TAG, "stepClickContactsTab: 未找到通讯录节点，重试 $retry/$MAX_RETRY")
             delay(500)
         }
-        throw RuntimeException("点击通讯录超时")
+        Log.e(TAG, "stepClickContactsTab: 点击通讯录超时")
+        return
     }
 
     /**
@@ -269,7 +287,8 @@ class SelectToSpeakService : AccessibilityService() {
             delay(500)
             retry++
         }
-        throw RuntimeException("查找联系人 $targetName 超时")
+        Log.e(TAG, "stepFindAndClickContact: 查找联系人 $targetName 超时")
+        return
     }
 
     /**
@@ -459,7 +478,8 @@ class SelectToSpeakService : AccessibilityService() {
             Log.d(TAG, "stepClickVideoCallBtn: 未找到，重试 $retry/$MAX_RETRY")
             delay(500)
         }
-        throw RuntimeException("点击音视频通话超时")
+        Log.e(TAG, "stepClickVideoCallBtn: 点击音视频通话超时")
+        return
     }
 
     /**
@@ -493,7 +513,8 @@ class SelectToSpeakService : AccessibilityService() {
             Log.d(TAG, "stepClickVideoChat: 未找到，重试 $retry/$MAX_RETRY")
             delay(500)
         }
-        throw RuntimeException("点击视频通话超时")
+        Log.e(TAG, "stepClickVideoChat: 点击视频通话超时")
+        return
     }
 
     // ==================== 页面判断 ====================
@@ -550,6 +571,51 @@ class SelectToSpeakService : AccessibilityService() {
             }
         } catch (e: Exception) {
             Log.e(TAG, "toast failed", e)
+        }
+    }
+
+    // ==================== Overlay 窗口保活 ====================
+
+    /**
+     * 添加一个 1x1 的 TYPE_ACCESSIBILITY_OVERLAY 透明窗口
+     * 系统会认为服务正在使用窗口，降低被回收的概率
+     * 参考 GKD 项目的保活逻辑
+     */
+    private var aliveView: View? = null
+    private val wm by lazy { getSystemService(Context.WINDOW_SERVICE) as WindowManager }
+
+    private fun addAliveOverlayView() {
+        removeAliveOverlayView()
+        val tempView = View(this)
+        val lp = WindowManager.LayoutParams().apply {
+            type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+            format = PixelFormat.TRANSLUCENT
+            flags = flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            gravity = Gravity.START or Gravity.TOP
+            width = 1
+            height = 1
+            packageName = this@SelectToSpeakService.packageName
+        }
+        try {
+            wm.addView(tempView, lp)
+            aliveView = tempView
+            Log.i(TAG, "addAliveOverlayView: 保活窗口添加成功")
+        } catch (e: Throwable) {
+            aliveView = null
+            Log.e(TAG, "addAliveOverlayView: 保活窗口添加失败", e)
+            toast("添加无障碍保活失败，请尝试重启无障碍")
+        }
+    }
+
+    private fun removeAliveOverlayView() {
+        if (aliveView != null) {
+            try {
+                wm.removeView(aliveView)
+            } catch (e: Throwable) {
+                Log.e(TAG, "removeAliveOverlayView: 移除保活窗口失败", e)
+            }
+            aliveView = null
         }
     }
 }

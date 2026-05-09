@@ -11,12 +11,11 @@
         android:padding="24dp">
 
         <TextView
-            android:id="@+id/tv_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:textColor="#666666"
-            android:text="@string/hint_fill_then_arm" />
+            android:text="@string/hint_test" />
 
         <TextView
             android:layout_width="match_parent"
@@ -25,7 +24,7 @@
             android:text="@string/label_name" />
 
         <EditText
-            android:id="@+id/et_name"
+            android:id="@+id/et_test_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_name"
@@ -39,7 +38,7 @@
             android:text="@string/label_phone_optional" />
 
         <EditText
-            android:id="@+id/et_phone"
+            android:id="@+id/et_test_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_phone"
@@ -47,19 +46,18 @@
             android:autofillHints="phone" />
 
         <Button
-            android:id="@+id/btn_arm"
+            android:id="@+id/btn_test_call"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/btn_arm_write" />
+            android:text="@string/btn_test_jw" />
 
         <Button
-            android:id="@+id/btn_cancel"
+            android:id="@+id/btn_test_dial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:enabled="false"
-            android:text="@string/btn_cancel"
-            style="?attr/borderlessButtonStyle" />
+            android:text="@string/btn_test_dial" />
+
     </LinearLayout>
 </ScrollView>

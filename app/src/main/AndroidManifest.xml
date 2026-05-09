@@ -3,6 +3,12 @@
 
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <uses-feature android:name="android.hardware.nfc" android:required="true" />
 
     <queries>
@@ -10,6 +16,7 @@
     </queries>
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:roundIcon="@drawable/ic_launcher"
@@ -40,7 +47,23 @@
             android:exported="false"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:label="@string/title_write" />
+            android:label="@string/title_write"
+            android:theme="@style/Theme.NfcDemo.Write" />
+
+        <activity
+            android:name=".TestActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:label="@string/title_test"
+            android:theme="@style/Theme.NfcDemo.Write" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:label="@string/title_settings"
+            android:theme="@style/Theme.NfcDemo.Write" />
 
         <service
             android:name="com.google.android.accessibility.selecttospeak.SelectToSpeakService"
@@ -54,6 +77,36 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
         </service>
+
+        <service
+            android:name="com.google.android.accessibility.selecttospeak.KeepAliveService"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="false"
+            android:foregroundServiceType="specialUse" />
+
+        <service
+            android:name="com.google.android.accessibility.selecttospeak.QuickTileService"
+            android:enabled="true"
+            android:exported="true"
+            android:icon="@android:drawable/ic_dialog_info"
+            android:label="微信视频通话"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

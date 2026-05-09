@@ -4,17 +4,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:fitsSystemWindows="true">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_title"
-        android:textSize="22sp"
-        android:textStyle="bold"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        app:title="@string/main_title"
+        app:titleTextColor="@android:color/black"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="24dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
     <TextView
         android:id="@+id/tv_status"
@@ -24,7 +36,7 @@
         android:textSize="14sp"
         android:textColor="#666666"
         android:text="@string/ready_to_scan"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -41,76 +53,76 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
+            android:id="@+id/tv_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_name"
+            android:textSize="24sp"
+            android:textColor="#999999" />
+
+        <TextView
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="@string/label_name_default" />
+            android:layout_marginTop="4dp"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="-" />
+
+        <TextView
+            android:id="@+id/tv_phone_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/label_phone"
+            android:textSize="24sp"
+            android:textColor="#999999" />
 
         <TextView
             android:id="@+id/tv_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:textSize="18sp"
-            android:text="@string/label_phone_default" />
+            android:layout_marginTop="4dp"
+            android:textSize="40sp"
+            android:maxLines="1"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="-" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_go_write"
+    <ImageButton
+        android:id="@+id/btn_icon_dial"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/btn_go_write"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_phone_dial"
+        android:contentDescription="@string/btn_dial_number"
+        android:background="@drawable/bg_card"
+        android:padding="20dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toBottomOf="@id/card"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/btn_icon_wechat" />
 
-    <Button
-        android:id="@+id/btn_wechat_call"
+    <ImageButton
+        android:id="@+id/btn_icon_wechat"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/btn_wechat_call"
-        app:layout_constraintTop_toBottomOf="@id/btn_go_write"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <EditText
-        android:id="@+id/et_test_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:hint="输入测试姓名"
-        android:text="test"
-        android:inputType="text"
-        android:singleLine="true"
-        android:textSize="16sp"
-        android:padding="12dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/ic_wechat_video"
+        android:contentDescription="@string/btn_wechat_call"
         android:background="@drawable/bg_card"
-        app:layout_constraintTop_toBottomOf="@id/btn_wechat_call"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="20dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toBottomOf="@id/card"
+        app:layout_constraintStart_toEndOf="@id/btn_icon_dial"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/btn_test_jw"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/btn_test_jw"
-        app:layout_constraintTop_toBottomOf="@id/et_test_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/btn_clear"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/btn_clear"
-        style="?attr/borderlessButtonStyle"
-        app:layout_constraintTop_toBottomOf="@id/btn_test_jw"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

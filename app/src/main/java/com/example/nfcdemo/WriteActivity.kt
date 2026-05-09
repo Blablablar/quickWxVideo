@@ -13,14 +13,11 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 
 class WriteActivity : AppCompatActivity() {
 
     private var nfcAdapter: NfcAdapter? = null
     private var pendingIntent: PendingIntent? = null
-    private var intentFilters: Array<IntentFilter>? = null
-    private var techLists: Array<Array<String>>? = null
 
     private lateinit var etName: EditText
     private lateinit var etPhone: EditText
@@ -34,6 +31,8 @@ class WriteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         etName = findViewById(R.id.et_name)
         etPhone = findViewById(R.id.et_phone)
@@ -49,29 +48,36 @@ class WriteActivity : AppCompatActivity() {
         prepareForegroundDispatch()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     private fun prepareForegroundDispatch() {
         val intent = Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.FLAG_MUTABLE
         } else 0
         pendingIntent = PendingIntent.getActivity(this, 0, intent, flags)
-
-        val tagFilter = IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED)
-        val techFilter = IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED)
-        val ndefFilter = IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED)
-        intentFilters = arrayOf(tagFilter, techFilter, ndefFilter)
-        techLists = arrayOf(
-            arrayOf(android.nfc.tech.Ndef::class.java.name),
-            arrayOf(android.nfc.tech.NdefFormatable::class.java.name)
-        )
     }
+
+    private fun buildIntentFilters(): Array<IntentFilter> = arrayOf(
+        IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED),
+        IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED),
+        IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED)
+    )
+
+    private fun buildTechLists(): Array<Array<String>> = arrayOf(
+        arrayOf(android.nfc.tech.Ndef::class.java.name),
+        arrayOf(android.nfc.tech.NdefFormatable::class.java.name)
+    )
 
     private fun armWrite() {
         val name = etName.text.toString().trim()
         val phone = etPhone.text.toString().trim()
 
-        if (name.isEmpty() || phone.isEmpty()) {
-            Toast.makeText(this, R.string.input_required, Toast.LENGTH_SHORT).show()
+        if (name.isEmpty()) {
+            Toast.makeText(this, R.string.input_name_required, Toast.LENGTH_SHORT).show()
             return
         }
         if (nfcAdapter == null) {
@@ -100,7 +106,7 @@ class WriteActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        nfcAdapter?.takeIf { it.isEnabled }?.enableForegroundDispatch(this, pendingIntent, intentFilters, techLists)
+        nfcAdapter?.takeIf { it.isEnabled }?.enableForegroundDispatch(this, pendingIntent, buildIntentFilters(), buildTechLists())
     }
 
     override fun onPause() {
@@ -122,6 +128,8 @@ class WriteActivity : AppCompatActivity() {
         try {
             writeTag(tag, pendingMessage!!)
             Toast.makeText(this, R.string.write_success, Toast.LENGTH_LONG).show()
+            etName.text.clear()
+            etPhone.text.clear()
             cancelWrite()
         } catch (e: Exception) {
             Toast.makeText(this, getString(R.string.write_failed_format, e.message), Toast.LENGTH_LONG).show()
