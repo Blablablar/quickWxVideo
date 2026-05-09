@@ -47,7 +47,7 @@ class KeepAliveService : Service() {
          * quickWxVideo 简化为：a11y已开启 && 服务未运行
          */
         fun needRestart(context: Context): Boolean {
-            return com.example.nfcdemo.ActionHelper.isAccessibilityServiceEnabled(context) && !isRunning.value
+            return com.awll.nfcmiaoshi.ActionHelper.isAccessibilityServiceEnabled(context) && !isRunning.value
         }
 
         /**
@@ -212,7 +212,7 @@ class KeepAliveService : Service() {
         val a11yRunning = SelectToSpeakService.instance != null
         val text = if (a11yRunning) {
             "无障碍服务运行中"
-        } else if (com.example.nfcdemo.ActionHelper.isAccessibilityServiceEnabled(this)) {
+        } else if (com.awll.nfcmiaoshi.ActionHelper.isAccessibilityServiceEnabled(this)) {
             "无障碍服务异常，正在恢复…"
         } else {
             "无障碍服务未开启"

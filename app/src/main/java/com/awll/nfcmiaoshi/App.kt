@@ -1,4 +1,4 @@
-package com.example.nfcdemo
+package com.awll.nfcmiaoshi
 
 import android.app.Application
 import android.content.Intent

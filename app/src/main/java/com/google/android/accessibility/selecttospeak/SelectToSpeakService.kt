@@ -3,7 +3,6 @@ package com.google.android.accessibility.selecttospeak
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
 import android.graphics.PixelFormat
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -13,10 +12,10 @@ import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
+import com.awll.nfcmiaoshi.PinyinUtils
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlin.coroutines.coroutineContext
 
 /**
@@ -122,9 +121,9 @@ class SelectToSpeakService : AccessibilityService() {
                 stepClickVideoCallBtn()
 
                 // 步骤4：点击「视频通话」
-                stepClickVideoChat()
+                // stepClickVideoChat()
 
-                toast("正在发起视频通话…")
+                // toast("正在发起视频通话…")
             } catch (e: CancellationException) {
                 Log.d(TAG, "startCall: 任务已取消")
             } catch (e: Exception) {
@@ -223,7 +222,7 @@ class SelectToSpeakService : AccessibilityService() {
      */
     private suspend fun stepFindAndClickContact() {
         // 先通过右侧字母索引跳转到对应首字母区域
-        val firstLetter = getPinyinInitial(targetName)
+        val firstLetter = PinyinUtils.getPinyinInitial(targetName)
         if (firstLetter.isNotEmpty()) {
             stepClickLetterIndex(firstLetter)
         }
@@ -405,44 +404,6 @@ class SelectToSpeakService : AccessibilityService() {
                     " bounds=$bounds clickable=${node.isClickable} scrollable=${node.isScrollable} childCount=${node.childCount}$marker")
         }
         Log.d(TAG, "dumpAllNodes: ===== END =====")
-    }
-
-    /**
-     * 获取联系人姓名的首字母拼音
-     * 使用 Android Collator 与 A-Z 参考字比较来确定首字母
-     */
-    private fun getPinyinInitial(name: String): String {
-        if (name.isEmpty()) return ""
-        // 找到第一个中文字符、英文字母或数字，跳过空格、符号等
-        val firstChar = name.firstOrNull { c ->
-            c in 'A'..'Z' || c in 'a'..'z' || c in '\u4E00'..'\u9FFF' || c in '0'..'9'
-        } ?: return ""
-
-        // 数字开头返回 "#"
-        if (firstChar in '0'..'9') return "#"
-
-        // 英文字母直接返回
-        if (firstChar in 'A'..'Z') return firstChar.toString()
-        if (firstChar in 'a'..'z') return firstChar.uppercaseChar().toString()
-
-        // 中文字符：用 ICU Collator（拼音排序），API 24+ 可用
-        val collator: java.util.Comparator<Any> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            android.icu.text.Collator.getInstance(android.icu.util.ULocale.CHINA)
-        } else {
-            // 低版本降级使用 java.text.Collator（笔画排序，可能不准确）
-            java.text.Collator.getInstance(java.util.Locale.CHINESE)
-        }
-        val letters = "ABCDEFGHJKLMNOPQRSTWXYZ" // I/U/V 不做拼音首字母
-        val refs = "八嚓哒鹅发旮哈讥咔垃妈拿噢啪七日撒他挖希压匝"
-
-        val charStr = firstChar.toString()
-        for (i in letters.indices) {
-            val nextRef = if (i + 1 < refs.length) refs[i + 1].toString() else "鼱"
-            if (collator.compare(charStr, nextRef) < 0) {
-                return letters[i].toString()
-            }
-        }
-        return "Z"
     }
 
     /**

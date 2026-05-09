@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">NFC 名片</string>
+    <string name="app_name">NFC秒视</string>
     <string name="main_title">NFC 名片读取</string>
     <string name="title_write">写入 NFC 白卡</string>
     <string name="title_test">测试</string>
@@ -30,8 +30,8 @@
     <string name="btn_arm_write">开始写入</string>
     <string name="btn_cancel">取消</string>
 
-    <string name="accessibility_desc">NFC名片微信助手：自动在微信中搜索联系人并发起视频通话。请在扫描NFC名片后点击"微信视频通话"按钮使用。</string>
-    <string name="accessibility_not_enabled">请先前往系统设置 → 无障碍 → NFC名片微信助手 中开启服务</string>
+    <string name="accessibility_desc">NFC秒视：自动在微信中搜索联系人并发起视频通话。请在扫描NFC名片后点击"微信视频通话"按钮使用。</string>
+    <string name="accessibility_not_enabled">请先前往系统设置 → 无障碍 → NFC秒视 中开启服务</string>
     <string name="wechat_call_started">正在唤起微信…</string>
 
     <string name="input_name_required">姓名不能为空</string>

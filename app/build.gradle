@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.nfcdemo'
-    compileSdk 36
+    namespace 'com.awll.nfcmiaoshi'
+    compileSdk 37
 
     defaultConfig {
-        applicationId "com.example.nfcdemo"
+        applicationId "com.awll.nfcmiaoshi"
         minSdk 23
         targetSdk 35
         versionCode 1
@@ -34,5 +34,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
 
     // Kotlin 协程
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0'
+
+    // 拼音库
+    implementation 'com.belerweb:pinyin4j:2.5.1'
 }

@@ -8,12 +8,10 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
@@ -38,7 +36,7 @@ class QuickTileService : TileService() {
         private var lastFixTime = 0L
     }
 
-    private val scope = MainScope()
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     /**
      * 对齐 GKD BaseTileService.listeningFlow
